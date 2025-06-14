@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Surprise</title>
+  <style>
+    /* General styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom, #ffe1e8, #f3e5f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      color: #ff2e93;
+    }
+
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(255, 0, 128, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .background-decor span {
+      position: absolute;
+      font-size: 1.2rem;
+      animation: float 6s infinite ease-in-out;
+      opacity: 0.5;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+
+    .hide { display: none; }
+
+    /* Page 1: Loading */
+    .hearts {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .loading-box {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #e60073;
+    }
+
+    /* Page 2: Countdown */
+    .countdown-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ff2e93;
+      margin-bottom: 1rem;
+    }
+
+    .countdown-timer {
+      display: flex;
+      justify-content: space-around;
+      margin: 1rem 0;
+    }
+
+    .timer-box {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(255, 105, 180, 0.2);
+      padding: 1rem;
+      min-width: 60px;
+    }
+
+    .value {
+      font-size: 1.5rem;
+      color: #a64dff;
+    }
+
+    .label {
+      font-size: 0.9rem;
+      color: #ff4da6;
+      margin-top: 0.5rem;
+    }
+
+    .message {
+      background: #ffe6f0;
+      color: #6600cc;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+    }
+
+    /* Page 3: Final Birthday Message */
+    .birthday-title {
+      font-size: 2rem;
+      color: #ff0080;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-box {
+      background: linear-gradient(to right, #ff66cc, #9933ff);
+      border-radius: 15px;
+      color: white;
+      padding: 1.5rem;
+      margin: 1rem auto;
+      width: 60%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 10px rgba(153, 51, 255, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .card-box:hover {
+      transform: scale(1.05);
+    }
+
+    .wish-message {
+      font-size: 1rem;
+      color: #6a0dad;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+      color: #ff4d94;
+    }
+
+    /* Reveal Content (hidden by default) */
+    .reveal-content {
+      margin-top: 1rem;
+      display: none;
+    }
+    .reveal-content img {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .reveal-content audio {
+      margin-top: 1rem;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Background Decorations -->
+  <div class="background-decor">
+    <span style="top: 10%; left: 20%;">💛</span>
+    <span style="top: 30%; left: 60%;">💜</span>
+    <span style="top: 50%; left: 10%;">❤️</span>
+    <span style="top: 80%; left: 70%;">✨</span>
+    <span style="top: 40%; left: 30%;">💖</span>
+    <span style="top: 70%; left: 80%;">⭐</span>
+  </div>
+
+  <!-- Page 1: Loading -->
+  <div class="container" id="page1">
+    <div class="hearts">💗 💗 💗</div>
+    <div class="loading-box">Loading something special…</div>
+    <div style="margin-top: 1rem;">🎂 ✨ 🎁 💖 🎈</div>
+  </div>
+
+  <!-- Page 2: Countdown -->
+  <div class="container hide" id="page2">
+    <div class="countdown-title">Your Special Day is Almost Here💕</div>
+    <div class="countdown-timer">
+      <div class="timer-box"><div class="value" id="days">0</div><div class="label">Days</div></div>
+      <div class="timer-box"><div class="value" id="hours">0</div><div class="label">Hours</div></div>
+      <div class="timer-box"><div class="value" id="minutes">0</div><div class="label">Minutes</div></div>
+      <div class="timer-box"><div class="value" id="seconds">0</div><div class="label">Seconds</div></div>
+    </div>
+    <div class="message">Just a little more… A small gift for my favorite person❤️</div>
+  </div>
+
+  <!-- Page 3: Final Birthday Message -->
+  <div class="container hide" id="page3">
+    <div class="birthday-title">🎉 💗 Happy Birthday! 🎂 ✨ </div>
+    <div> <b>💕CHANDANAAA💕</b></div>
+    <div class="card-box" id="card" onclick="revealCard()">
+      Tap to Reveal Your Surprise 🎁
+    </div>
+    <!-- Hidden reveal content with temporary photo and song -->
+    <div class="reveal-content" id="revealContent">
+      <!-- Temporary birthday photo; replace the src URL when you have the actual photo -->
+      <img src="D:\birr\file_00000000b27461f8aef39608570de19c.jpg" alt="Birthday Photo">
+      <!-- Audio element for the birthday song -->
+      <audio id="birthdaySong" src="birthday.mp3"></audio>
+    </div>
+    <div class="wish-message">
+      May every wish you make today come true. You deserve the world, and I’ll always be here to remind you of that.
+    </div>
+    <div class="footer-note">
+      Let’s always stay like this… together, forever 🤗
+    </div>
+  </div>
+
+  <script>
+    // When page2 is shown, start the 10-second countdown.
+    let countdownDate;
+
+    // Show Page 2 after 3 seconds and set the countdown for 10 seconds.
+    setTimeout(() => {
+      document.getElementById('page1').classList.add('hide');
+      document.getElementById('page2').classList.remove('hide');
+      // Set countdown to 10 seconds from now
+      countdownDate = new Date().getTime() + 10000;
+    }, 3000);
+
+    // Transition to Page 3 when countdown finishes (3 sec loading + 10 sec countdown = 13 sec total)
+    setTimeout(() => {
+      document.getElementById('page2').classList.add('hide');
+      document.getElementById('page3').classList.remove('hide');
+    }, 13000);
+
+    // Countdown logic runs every second; it uses the updated countdownDate.
+    const updateCountdown = setInterval(() => {
+      // If countdownDate hasn't been set yet, do nothing.
+      if (!countdownDate) return;
+
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+
+      if (distance < 0) {
+        clearInterval(updateCountdown);
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days').innerText = days;
+      document.getElementById('hours').innerText = hours;
+      document.getElementById('minutes').innerText = minutes;
+      document.getElementById('seconds').innerText = seconds;
+    }, 1000);
+
+    // Function to reveal the surprise: temporary photo and play birthday song.
+    function revealCard() {
+      // Hide the card-box
+      document.getElementById('card').style.display = 'none';
+      // Show the hidden content
+      const revealContent = document.getElementById('revealContent');
+      revealContent.style.display = 'block';
+
+      // Get the audio element and play the birthday song
+      const audio = document.getElementById('birthdaySong');
+      // Play the audio (user interaction allows autoplay)
+      audio.play().catch(err => {
+        console.log("Auto-play prevented:", err);
+      });
+    }
+  </script>
+</body>
+</html>
